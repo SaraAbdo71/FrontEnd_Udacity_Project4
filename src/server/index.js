@@ -4,6 +4,8 @@ const mockAPIResponse = require('./mockAPI.js')
 
 const app = express()
 
+
+
 app.use(express.static('dist'))
 
 console.log(__dirname)
@@ -17,6 +19,7 @@ app.get('/', function (req, res) {
 app.listen(8080, function () {
     console.log('Example app listening on port 8080!')
 })
+
 
 app.get('/test', function (req, res) {
     res.send(mockAPIResponse)
