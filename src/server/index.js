@@ -1,26 +1,32 @@
-var path = require('path')
-const express = require('express')
-const mockAPIResponse = require('./mockAPI.js')
+var path = require('path');
+const mockAPIResponse = require('./mockAPI.js');
+var express =require('express');
+const app = express();
+var bodyParser= require('body-parser');
+var cors = require('cors');
+var requesting = require('./request')
 
-const app = express()
+app.use(cors())
+app.use(bodyParser.json()) // to use json
 
+app.use(express.static('../../dist'));
 
-
-app.use(express.static('dist'))
-
-console.log(__dirname)
+console.log(__dirname);
 
 app.get('/', function (req, res) {
-    // res.sendFile('dist/index.html')
-    res.sendFile(path.resolve('src/client/views/index.html'))
-})
+    res.sendFile(path.resolve('../../dist/index.html'));
+});
 
 // designates what port the app will listen to for incoming requests
-app.listen(8080, function () {
-    console.log('Example app listening on port 8080!')
-})
+
 
 
 app.get('/test', function (req, res) {
+    console.log(mockAPIResponse);
     res.send(mockAPIResponse)
-})
+});
+
+//post
+app.post('/article',requesting.validateInputRequest, requesting.Posting); //call functions from requset.js
+
+module.exports =app;
