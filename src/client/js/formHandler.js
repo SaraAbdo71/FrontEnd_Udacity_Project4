@@ -32,16 +32,12 @@ function handleSubmit(event) {
     ).then((res) => {
       console.log(res);
       document.getElementById("results").innerHTML =
-        "Polarity : " + res.polarity
-      document.getElementById("results").innerHTML =
-        "Subjectivity : " + res.subjectivity
-      document.getElementById("results").innerHTML = 
-        "Text : " + res.text
-      document.getElementById("results").innerHTML =
-        "Polarity Confidence : " + res.polarity_confidence
-      document.getElementById("results").innerHTML =
-        "Subjectivity Confidence : " + res.subjectivity_confidence
-    });
+        "Polarity : " + res.polarity + "<br/>" + 
+        "Subjectivity : " + res.subjectivity + "<br/>" + 
+        "Text : " + res.text + "<br/>" + 
+        "Polarity Confidence : " + res.polarity_confidence + "<br/>" + 
+        "Subjectivity Confidence : " + res.subjectivity_confidence;
+    })
   } else {
     document.getElementById("results").innerHTML =
       "The URL:[" +
