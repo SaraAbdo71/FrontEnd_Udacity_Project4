@@ -2,9 +2,9 @@ var path = require('path');
 const mockAPIResponse = require('./mockAPI.js');
 var express =require('express');
 const app = express();
-var bodyParser= require('body-parser');
-var cors = require('cors');
-var requesting = require('./request')
+const bodyParser= require('body-parser');
+const cors = require('cors');
+const requesting = require('./request')
 
 app.use(cors())
 app.use(bodyParser.json()) // to use json

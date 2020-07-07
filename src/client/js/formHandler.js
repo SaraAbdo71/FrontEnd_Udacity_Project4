@@ -26,7 +26,7 @@ function handleSubmit(event) {
     console.log("::: Form Submitted :::");
 
     sendRequest(
-      "http://localhost:8080/article",
+      "http://localhost:8081/article",
       { text: formText },
       "POST"
     ).then((res) => {

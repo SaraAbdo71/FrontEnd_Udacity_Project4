@@ -1,108 +1,287 @@
-# Project Instructions
+#Evaluate a News Article with Natural Language Processing
+ We will build a web tool that allows users to run Natural Language Processing (NLP) on articles or blogs found on other websites. NLP is the ability of an application to understand the human language, written or oral.
+- NLP is a subset of AI that provides computers ability to process or interact with natural human speech. In NLP, machine learning and deep learning are used on massive amounts of data to obtain the rules and understanding of nuance in human speech.
 
-This repo is your starter code for the project. It is the same as the starter code we began with in lesson 2. Install and configure Webpack just as we did in the course. Feel free to refer to the course repo as you build this one, and remember to make frequent commits and to create and merge branches as necessary!
+### Following are the project prerequisites: 
+- Webserver - Node
+- Web application framework for routing - Express
+- Build tool - Webpack. Using webpack, we will set up the - app to have dev and prod environments, each with their  own set of tools and commands.
+- External script - Service Worker
+- External API - Aylien
 
-The goal of this project is to give you practice with:
-- Setting up Webpack
-- Sass styles
-- Webpack Loaders and Plugins
-- Creating layouts and page design
-- Service workers
-- Using APIs and creating requests to external urls
+### Getting Started - Setting up the Project:
+npm install
 
-On top of that, I want to introduce you to the topic of Natural Language Processing. NLPs leverage machine learning and deep learning create a program that can interpret natural human speech. Systems like Alexa, Google Assistant, and many voice interaction programs are well known to us, but understanding human speech is an incredibly difficult task and requires a lot of resources to achieve. Full disclosure, this is the Wikipedia definition, but I found it to be a clear one:
+### we installed the following loaders and plugins so far:
 
-> Natural language processing (NLP) is a subfield of computer science, information engineering, and artificial intelligence
-concerned with the interactions between computers and human (natural) languages, in particular how to program computers to
-process and analyze large amounts of natural language data.
+## Webpack:
+   [http://https://webpack.js.org/](http://https://webpack.js.org/)
 
-You could spend years and get a masters degree focusing on the details of creating NLP systems and algorithms. Typically, NLP programs require far more resources than individuals have access to, but a fairly new API called Aylien has put a public facing API in front of their NLP system. We will use it in this project to determine various attributes of an article or blog post.
+webpack is a static module bundler for modern JavaScript applications.
+Webpack takes all the assets “bundles” or combines them into fewer files that are much easier to manage.
 
-## Getting started
+### Install Webpack 
 
-It would probably be good to first get your basic project setup and functioning. Follow the steps from the course up to Lesson 4 but don't add Service Workers just yet. We won't need the service workers during development and having extra caches floating around just means there's more potential for confusion. So, fork this repo and begin your project setup.
+1- npm install
 
-Remember that once you clone, you will still need to install everything:
+--git checkout 1-install-webpack
+  git branch
+  
+2- npm i webpack webpack-cli 
 
-`cd` into your new folder and run:
-- `npm install`
+3- In package.json file be sure the follow is exist:-
+   
+"dependencies": {
+ "express": "^4.17.1",
+ "webpack": "^4.43.0",
+ "webpack-cli": "^3.3.11"
+},
 
-## Setting up the API
+4- In package.json, add a build npm script as:
 
-The Aylien API is perhaps different than what you've used before. It has you install a node module to run certain commands through, it will simplify the requests we need to make from our node/express backend.
+"scripts": {
+"build": "webpack"
+},
 
-### Step 1: Signup for an API key
-First, you will need to go [here](https://developer.aylien.com/signup). Signing up will get you an API key. Don't worry, at the time of this course, the API is free to use up to 1000 requests per day or 333 intensive requests. It is free to check how many requests you have remaining for the day.
+"devDependencies":{
+  "webpack-dev-server": "^3.11.0",
+},
 
-### Step 2: Install the SDK
-Next you'll need to get the SDK. SDK stands for Software Development Kit, and SDKs are usually a program that brings together various tools to help you work with a specific technology. SDKs will be available for all the major languages and platforms, for instance the Aylien SDK brings together a bunch of tools and functions that will make it possible to interface with their API from our server and is available for Node, Python, PHP, Go, Ruby and many others. We are going to use the Node one, the page is available [here](https://docs.aylien.com/textapi/sdks/#sdks). You get 1000 free requests per day. 
+5- Create a webpack.config.js file in the root location of your project
+   and add the necessary require statements, and a blank module.exports code as:
+ 
+const path = require("path")
+const webpack = require("webpack")
+module.exports = {
+}
 
-### Step 3: Require the SDK package
-Install the SDK in your project and then we'll be ready to set up your server/index.js file.
 
-Your server index.js file must have these things:
+6- npm run build
 
-- [ ] Require the Aylien npm package
-```
-var aylien = require("aylien_textapi");
-```
+##Loader
+[http://https://webpack.js.org/concepts/loaders/](http://https://webpack.js.org/concepts/loaders/)
 
-### Step 4: Environment Variables
-Next we need to declare our API keys, which will look something like this:
-```
-// set aylien API credentias
+Webpack only understands JavaScript and JSON files. Loaders allow webpack to process other types of files and convert them into valid modules that can be consumed by your application.
+
+Allow us to transform files of one type into another type so that webpack can work with them.
+
+### install Loader Babel
+ 
+
+-1- npm i -D @babel/core @babel/preset-env babel-loader
+
+-2- Create a new file .babelrc and add the follow  configration line:-
+   { ‘presets’: ['@babel/preset-env'] }
+   
+
+##Plugins
+[http://webpack.js.org/concepts/plugins/](http://webpack.js.org/concepts/plugins/)
+
+While loaders are used to transform certain types of modules, plugins can be leveraged to perform a wider range of tasks like bundle optimization, asset management and injection of environment variables.
+
+Plugins can do all sorts of things, from automatically adding asset references to an html file to allowing for hot module replacement - which is used in React’s Create React App to create an auto updating development server
+
+### install Plugin 
+
+1- npm i -D html-webpack-plugin
+
+2- in the webpack-config.js add this :
+   const HtmlWebPackPlugin = require("html-webpack-plugin")
+   
+----then also add to webpack-config.js  in module the follow line:
+   - plugins:[
+      new HtmlWebPackPlugin({
+	      template:"./src/client/views/index.html",
+		  filename:"./index.html",
+	        })
+          ]
+3- update the server file to change the home route to use the index file from dist:
+    - app.get('/', function(req,res) {
+       res.sendFile('dist/index.html')
+      })
+
+-- then update the asset file from :
+   - app.use(express.static('src/client'))
+        TO
+   - app.use(express.static('dist'))	  
+
+##Mode
+[http://webpack.js.org/configuration/mode/](http://webpack.js.org/configuration/mode/)
+
+
+#### Prepare the Mode 
+	
+1- Create a copy of the webpack.config.js, and rename it as webpack.prod.js.
+ This file should have mode: 'production' statement in module.exports.
+ 
+2- Now, rename the webpack.config.js to webpack.dev.js.
+ This file should have the following statements in module.exports
+
+3- The statements added to the package.json for the configuration files of production and development 
+ modes separately in the "script" block are:
+ 
+"scripts": {
+    "build-prod": "webpack --config webpack.prod.js",
+    "build-dev": "webpack-dev-server  --config webpack.dev.js --open"
+},
+
+
+#### -->Convenience in Webpack
+
+1- npm i -D webpack-dev-server
+
+2- in the webpack-dev file:
+  webpack-dev-server --config webpack.dev.js --open
+  
+#####3- clean webpack plugin :
+   this plugin will remove all files inside webpack's output.path directory, as well as all unused webpack assets after every successful rebuild.
+
+  npm i -D clean-webpack-plugin
+ 
+4- in the webpack config add the follow:
+const {CleanWebpackPlugin}=require('clean-webpack-plugin');
+ 
+5- Add the plugin to Plugins array in the module.exports:-
+     new CleanWebpackPlugin()
+	 
+OR
+ new CleanWebpackPlugin({
+                // Simulate the removal of files
+                dry: true,
+                // Write Logs to Console
+                verbose: true,
+                // Automatically remove all unused webpack assets on rebuild
+                cleanStaleWebpackAssets: true,
+                protectWebpackAssets: false
+        })
+		
+
+###Sass 
+Sass - it's a CSS extension language. Sass provides an extra set of CSS language syntax that helps writing more efficient styles
+
+1- npm i -D style-loader node-sass css-loader sass-loader
+  --->>>Babel loader is optional to be install
+  --npm i -D @babel/core @babel/preset-env babel-loader
+
+2- add this test case to the rules array in your dev webpack config.:
+  {
+        test: /\.scss$/,
+        use: [ 'style-loader', 'css-loader', 'sass-loader' ]
+}
+
+3- 	  let’s go to client/index.js and add the follow:
+import './styles/resets.scss'
+import './styles/base.scss'
+import './styles/footer.scss'
+import './styles/form.scss'
+import './styles/heaer.scss'
+
+4-npm run build-dev  and npm run start
+
+
+### Set up Production Configuration for Webpack 
+
+#### 1-In packages.json append the following new entries in "devDependencies":
+
+"mini-css-extract-plugin": "^0.9.0",
+"terser-webpack-plugin": "^1.3.0",
+"optimize-css-assets-webpack-plugin": "^5.0.3",
+
+#### Updated the rule section for Sass file loaders:
+{
+test: /\.scss$/,
+use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+}, 
+
+####Instantiate the new plugin in the plugin list:
+
+new MiniCssExtractPlugin({ filename: "[name].css" })
+On the terminal, run the following commands:
+
+npm i -D mini-css-extract-plugin
+npm i -D optimize-css-assets-webpack-plugin terser-webpack-plugin
+npm run build-prod
+
+
+
+ ### Service Workers
+
+####In webpack.prod.js config file,
+
+-->>Require the plugin, by appending the new plugin statement
+
+const WorkboxPlugin = require('workbox-webpack-plugin');
+
+-->>Instantiate the new plugin in the plugin list:
+
+new WorkboxPlugin.GenerateSW()
+
+-->>On the terminal, install the plugin using
+
+ npm install workbox-webpack-plugin --save-dev
+
+-->we will add a script to our /src/client/views/index.html
+
+<script>
+ // Check that service workers are supported
+ if ('serviceWorker' in navigator) {
+     // Use the window load event to keep the page load performant
+     window.addEventListener('load', () => {
+         navigator.serviceWorker.register('/service-worker.js');
+     });
+ }
+</script>
+
+
+#Setting up the Aylien API
+
+###1-Signup for an API key
+
+[https://developer.aylien.com/](https://developer.aylien.com/)
+
+###  2: Install the SDK 
+[https://docs.aylien.com/textapi/sdks/#node-js-sdk](https://docs.aylien.com/textapi/sdks/#node-js-sdk)
+### 3: Require the SDK package
+Your server/index.js file must have these things:
+
+var aylien = require("aylien_textapi"); 
+
+### 4: Environment Variables
+ in server/index.js, you need to declare your API credentials, which will look something like this:
+
 var textapi = new aylien({
   application_id: "your-api-id",
   application_key: "your-key"
 });
-```
 
-...but there's a problem with this. We are about to put our personal API keys into a file, but when we push, this file is going to be available PUBLICLY on Github. Private keys, visible publicly are never a good thing. So, we have to figure out a way to make that not happen. The way we will do that is with environment variables. Environment variables are pretty much like normal variables in that they have a name and hold a value, but these variables only belong to your system and won't be visible when you push to a different environment like Github.
+#####Follow the steps below to configure environment variables:
 
-- [ ] Use npm or yarn to install the dotenv package ```npm install dotenv```. This will allow us to use environment variables we set in a new file
-- [ ] Create a new ```.env``` file in the root of your project
-- [ ] Go to your .gitignore file and add ```.env``` - this will make sure that we don't push our environment variables to Github! If you forget this step, all of the work we did to protect our API keys was pointless.
-- [ ] Fill the .env file with your API keys like this:
-```
+Use npm to install the dotenv package - npm install dotenv This will allow us to use environment variables we set in a new file
+Create a new .env file in the root of your project.
+Fill the .env file with your API keys like this:
+
 API_ID=**************************
+
 API_KEY=**************************
-```
-- [ ] Add this code to the very top of your server/index.js file:
-```
+
+#####Add this code to the very top of your server/index.js file:
+
 const dotenv = require('dotenv');
+
 dotenv.config();
-```
-- [ ] Reference variables you created in the .env file by putting ```process.env``` in front of it, an example might look like this:
-```
-console.log(`Your API key is ${process.env.API_KEY}`);
-```
-...Not that you would want to do that. This means that our updated API credential settings will look like this:
-```javascript
-// set aylien API credentials
-// NOTICE that textapi is the name I used, but it is arbitrary. 
-// You could call it aylienapi, nlp, or anything else, 
-//   just make sure to make that change universally!
+
+#####In server/index.js, your updated API credential settings should look like this:
+
 var textapi = new aylien({
-  application_id: process.env.API_ID,
-  application_key: process.env.API_KEY
+   application_id: process.env.API_ID,
+   application_key: process.env.API_KEY
 });
-```
 
-### Step 5: Using the API
+#Jest Framework
+[https://jestjs.io/](https://jestjs.io/)
 
-We're ready to go! The API has a lot of different endpoints you can take a look at [here](https://docs.aylien.com/textapi/endpoints/#api-endpoints). And you can see how using the SDK simplifies the requests we need to make. 
+Jest is a framework for testing JavaScript projects.
 
-I won't provide further examples here, as it's up to you to create the various requests and make sure your server is set up appropriately.
+###How does it work?
 
-## After the Aylien API
-
-Once you are hooked up to the Aylien API, you are most of the way there! Along with making sure you are following all the requirements in the project rubric in the classroom, here are a few other steps to make sure you take.
-
-- Parse the response body to dynamically fill content on the page.
-- Test that the server and form submission work, making sure to also handle error responses if the user input does not match API requirements. 
-- Go back to the web pack config and add the setup for service workers.  
-- Test that the site is now available even when you stop your local server 
-
-## Deploying
-
-A great step to take with your finished project would be to deploy it! Unfortunately its a bit out of scope for me to explain too much about how to do that here, but checkout [Netlify](https://www.netlify.com/) or [Heroku](https://www.heroku.com/) for some really intuitive free hosting options.
+Install Jest by using npm install --save-dev jest
