@@ -25,7 +25,9 @@ function Posting(req, res, next) {
       url: req.body.text,
     },
     function (error, response) {
-      if (error === null) {
+      if (error) {
+        throw error;
+      } else {
         res.send(response);
       }
     }

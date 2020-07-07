@@ -1,4 +1,4 @@
-async function sendRequest(apiFurl, data = {}, method = "GET") {
+async function sendRequest(url, data = {}, method = "GET") {
   var options = {
     method: method,
     mode: "cors",
@@ -13,7 +13,7 @@ async function sendRequest(apiFurl, data = {}, method = "GET") {
   if (method != "GET") {
     options.body = JSON.stringify(data); 
   }
-  const response = await fetch(apiFurl, options);
+  const response = await fetch(url, options);
 
   return response.json(); 
 }
